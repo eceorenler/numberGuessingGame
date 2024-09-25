@@ -44,10 +44,10 @@ void opening(){
         cin>> level;
         
         if (level == 1 || level == 2 || level == 3) {
-            getRandomNumber(level);  // Valid level, so we can proceed
+            getRandomNumber(level);  
             break;
         } else {
-            cout << "invalid level! please try again.\n";
+            cout << "invalid level! please try again."<<endl;
         }
     } while(true);
 }
