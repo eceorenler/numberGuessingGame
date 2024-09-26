@@ -4,75 +4,91 @@
 using namespace std;
 
 int randomNumber;
+int numberOGuesses;  
+int attempts = 1;   
+char again;     
 
-void easyGame(){
-    cout<<"easy level: thinking a number between 1 and 10..."<<endl;
-    randomNumber= rand() % (10) + 1;
-    
+void easyGame() {
+    cout << "Easy level: Guess a number between 1 and 10 (unlimited guesses)" << endl;
+    randomNumber = rand() % 10 + 1;
+    numberOGuesses = -1;  
 }
-void mediumGame(){
-    cout<<"medium game: guess a number between 1 and 50"<<endl;
-    randomNumber= rand() % (50) + 1;
-    
+
+void mediumGame() {
+    cout << "Medium level: Guess a number between 1 and 50 (10 guesses)" << endl;
+    randomNumber = rand() % 50 + 1;
+    numberOGuesses = 10;
 }
-void hardGame(){
-    cout<<"hard level: guess a number between 1 and 100"<<endl;
-    randomNumber= rand() % (100) + 1;
-    
+
+void hardGame() {
+    cout << "Hard level: Guess a number between 1 and 100 (8 guesses)" << endl;
+    randomNumber = rand() % 100 + 1;
+    numberOGuesses = 8;
 }
-void getRandomNumber(int level){
-    srand(time(nullptr));
-    
-    if (level==1){
+
+void getRandomNumber(int level) {
+    srand(time(nullptr));  // Initialize random seed
+    if (level == 1) {
         easyGame();
-    }else if (level==2){
+    } else if (level == 2) {
         mediumGame();
-    }else if (level==3){
+    } else if (level == 3) {
         hardGame();
-    } else{
-        cout<< "invalid level number"<<endl; 
+    } else {
+        cout << "Invalid level number." << endl;
     }
 }
 
-void opening(){
+void opening() {
     int level;
-    
-    cout<<"welcome to the number-guessing game!"<<endl;
-    
-    do{
-        cout<<" choose a level to play: \n 1. EASY \n 2. MEDIUM \n 3. HARD \n enter 1,2 or 3"<< endl;
-        cin>> level;
-        
+    cout << "Welcome to the number-guessing game!" << endl;
+
+    do {
+        cout << "Choose a level to play:\n 1. EASY\n 2. MEDIUM\n 3. HARD\nEnter 1, 2, or 3: ";
+        cin >> level;
+
         if (level == 1 || level == 2 || level == 3) {
             getRandomNumber(level);  
             break;
         } else {
-            cout << "invalid level! please try again."<<endl;
+            cout << "Invalid level! Please try again.\n";
         }
-    } while(true);
+    } while (true);
 }
 
-
-int main(){
+int main() {
     opening();
-    
- 
-    do {   
-        
+
+    do {
         int guess;
-        cout<< "you can make a guess now: "<<endl;
-        cin>>guess;
-        
-        if (guess< randomNumber) {
-            cout << "too low! try again."<<endl;
-        } else if (guess>randomNumber) {
-            cout << "too high! try again."<<endl;
+        cout << "Enter your guess here: ";
+        cin >> guess;
+
+        if (guess < randomNumber) {
+            if (numberOGuesses != -1) {
+                cout << "Too low! " << numberOGuesses - attempts << " guesses remaining." << endl;
+            } else {
+                cout << "Too low! Try again." << endl;  
+            }
+        } else if (guess > randomNumber) {
+            if (numberOGuesses != -1) {
+                cout << "Too high! " << numberOGuesses - attempts << " guesses remaining." << endl;
+            } else {
+                cout << "Too high! Try again." << endl; 
+            }
         } else {
-            cout << "congratulations! you guessed the number!"<<endl;
+            cout << "Congratulations! You guessed the number!" << endl;
             break;
         }
-    
-    } while(true); 
-    
+
+        attempts++;
+
+        if (numberOGuesses != -1 && attempts > numberOGuesses) {
+            cout << "You are out of guesses. Game over." << endl;
+            break;
+        }
+
+    } while (true);
+
     return 0;
 }
